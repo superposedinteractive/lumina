@@ -2,7 +2,7 @@
 Lumina is a flexible and powerful first-person shooter framework for the Godot game engine. It provides a solid foundation for creating captivating FPS games.
 
 ## Getting started
-To get started with Lumina, simply download or clone the repository, and import the project into Godot _(any version after 4.0)_ and wait for everything to import.
+To get started with Lumina, simply download or clone the repository, and import the project into Godot _(any version after 4.0)_, then open the `Lumina template project` and wait for everything to import.
 After everything finished importing, press `F5`. If Godot reports no errors, then Lumina has been setup successfully!
 
 ## Further docs

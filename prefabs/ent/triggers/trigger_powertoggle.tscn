@@ -1,0 +1,22 @@
+[gd_scene load_steps=5 format=3 uid="uid://ct85ndv8x3r0v"]
+
+[ext_resource type="Script" path="res://scripts/ent/triggers/powertoggle.gd" id="1_0c5d1"]
+[ext_resource type="Material" uid="uid://brayhax2prbm6" path="res://mat/dev/trigger/trigger.tres" id="2_lunvr"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_6a3ow"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_fo80m"]
+material = ExtResource("2_lunvr")
+
+[node name="trigger_powertrigger" type="Node3D"]
+script = ExtResource("1_0c5d1")
+
+[node name="Area3D" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+shape = SubResource("BoxShape3D_6a3ow")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_fo80m")
+
+[connection signal="body_entered" from="Area3D" to="." method="_on_body_entered"]

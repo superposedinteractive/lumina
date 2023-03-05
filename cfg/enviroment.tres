@@ -1,0 +1,25 @@
+[gd_resource type="Environment" load_steps=3 format=3 uid="uid://g06fjvygogah"]
+
+[ext_resource type="Material" uid="uid://blkmt0y03drv4" path="res://mat/sky/cheapsky/procedsky.tres" id="1_xa66q"]
+
+[sub_resource type="Sky" id="Sky_gxf55"]
+sky_material = ExtResource("1_xa66q")
+
+[resource]
+background_mode = 2
+sky = SubResource("Sky_gxf55")
+sky_rotation = Vector3(0, -7.84002, 0)
+ambient_light_source = 3
+reflected_light_source = 2
+tonemap_mode = 2
+tonemap_white = 2.0
+glow_enabled = true
+glow_normalized = true
+glow_bloom = 1.0
+fog_enabled = true
+fog_light_color = Color(0.133333, 0.141176, 0.0666667, 1)
+fog_aerial_perspective = 0.9
+volumetric_fog_enabled = true
+volumetric_fog_density = 0.005
+volumetric_fog_albedo = Color(0, 0.109804, 0.0117647, 1)
+adjustment_contrast = 0.9

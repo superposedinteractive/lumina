@@ -1,0 +1,14 @@
+[gd_resource type="StandardMaterial3D" load_steps=3 format=3 uid="uid://khi0xpx5y520"]
+
+[ext_resource type="Texture2D" uid="uid://dk3s6uwn8x0u2" path="res://mat/dev/button/button.png" id="1_2sjli"]
+[ext_resource type="Texture2D" uid="uid://ffmgj7nv2ag" path="res://mat/dev/button/button_emissive.png" id="2_demrx"]
+
+[resource]
+transparency = 1
+albedo_color = Color(1, 1, 1, 0.588235)
+albedo_texture = ExtResource("1_2sjli")
+emission_enabled = true
+emission_texture = ExtResource("2_demrx")
+uv1_scale = Vector3(8, 8, 8)
+uv1_triplanar = true
+uv1_world_triplanar = true

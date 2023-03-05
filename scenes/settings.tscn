@@ -1,0 +1,380 @@
+[gd_scene load_steps=4 format=3 uid="uid://dyd3pth43orbg"]
+
+[ext_resource type="Script" path="res://scripts/ui/settings.gd" id="1_siiao"]
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_2d2nl"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_y8aee"]
+font_size = 12
+font_color = Color(1, 1, 1, 0.588235)
+
+[node name="settings" type="Window"]
+initial_position = 1
+title = "Settings"
+size = Vector2i(600, 500)
+unresizable = true
+script = ExtResource("1_siiao")
+
+[node name="BG" type="Panel" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="TabContainer" type="TabContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Gameplay" type="TabBar" parent="VBoxContainer/TabContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/TabContainer/Gameplay"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.05
+anchor_right = 0.95
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="diff_easy" type="CheckBox" parent="VBoxContainer/TabContainer/Gameplay/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+button_group = SubResource("ButtonGroup_2d2nl")
+text = "Easy"
+
+[node name="Label" type="Label" parent="VBoxContainer/TabContainer/Gameplay/VBoxContainer/diff_easy"]
+layout_mode = 2
+offset_left = 150.0
+offset_top = 6.5
+offset_right = 750.0
+offset_bottom = 44.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "Enemies have worse aim. Weapons deal more damage."
+label_settings = SubResource("LabelSettings_y8aee")
+
+[node name="HSeparator2" type="HSeparator" parent="VBoxContainer/TabContainer/Gameplay/VBoxContainer"]
+layout_mode = 2
+
+[node name="diff_normal" type="CheckBox" parent="VBoxContainer/TabContainer/Gameplay/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+button_pressed = true
+button_group = SubResource("ButtonGroup_2d2nl")
+text = "Medium"
+
+[node name="Label2" type="Label" parent="VBoxContainer/TabContainer/Gameplay/VBoxContainer/diff_normal"]
+layout_mode = 2
+offset_left = 150.0
+offset_top = 6.5
+offset_right = 750.0
+offset_bottom = 25.5
+text = "Intended gameplay."
+label_settings = SubResource("LabelSettings_y8aee")
+
+[node name="HSeparator" type="HSeparator" parent="VBoxContainer/TabContainer/Gameplay/VBoxContainer"]
+layout_mode = 2
+
+[node name="diff_hard" type="CheckBox" parent="VBoxContainer/TabContainer/Gameplay/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+button_group = SubResource("ButtonGroup_2d2nl")
+text = "Hard"
+
+[node name="Label3" type="Label" parent="VBoxContainer/TabContainer/Gameplay/VBoxContainer/diff_hard"]
+layout_mode = 2
+offset_left = 150.0
+offset_top = 6.5
+offset_right = 750.0
+offset_bottom = 25.5
+text = "Only for the brave ones."
+label_settings = SubResource("LabelSettings_y8aee")
+
+[node name="hard_warning" type="Label" parent="VBoxContainer/TabContainer/Gameplay"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.85
+anchor_right = 0.5
+anchor_bottom = 0.85
+offset_left = -20.0
+offset_top = -21.0
+offset_right = 20.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "This difficulty isn't even remotely fair."
+horizontal_alignment = 1
+
+[node name="Keyboard" type="TabBar" parent="VBoxContainer/TabContainer"]
+visible = false
+layout_mode = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/TabContainer/Keyboard"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.025
+anchor_top = 0.025
+anchor_right = 0.975
+anchor_bottom = 0.975
+follow_focus = true
+
+[node name="keyboard_list" type="VBoxContainer" parent="VBoxContainer/TabContainer/Keyboard/ScrollContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="keyboard_prefab" type="HBoxContainer" parent="VBoxContainer/TabContainer/Keyboard/ScrollContainer/keyboard_list"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+alignment = 1
+
+[node name="input_name" type="Label" parent="VBoxContainer/TabContainer/Keyboard/ScrollContainer/keyboard_list/keyboard_prefab"]
+layout_mode = 2
+size_flags_horizontal = 6
+text = "%input%"
+
+[node name="input_bind" type="Button" parent="VBoxContainer/TabContainer/Keyboard/ScrollContainer/keyboard_list/keyboard_prefab"]
+layout_mode = 2
+size_flags_horizontal = 6
+text = "%bind%"
+
+[node name="Mouse" type="TabBar" parent="VBoxContainer/TabContainer"]
+visible = false
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/TabContainer/Mouse"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.025
+anchor_top = 0.025
+anchor_right = 0.975
+anchor_bottom = 0.975
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="VBoxContainer/TabContainer/Mouse/VBoxContainer"]
+layout_mode = 2
+text = "Mouse sensitivity"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/TabContainer/Mouse/VBoxContainer"]
+layout_mode = 2
+
+[node name="mouse_sens_slider" type="HSlider" parent="VBoxContainer/TabContainer/Mouse/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 0.5
+max_value = 2.0
+step = 0.1
+value = 0.5
+tick_count = 16
+ticks_on_borders = true
+
+[node name="mouse_sens_box" type="LineEdit" parent="VBoxContainer/TabContainer/Mouse/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 8
+text = "0.1"
+placeholder_text = "test"
+
+[node name="mouse_invert_box" type="CheckBox" parent="VBoxContainer/TabContainer/Mouse/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Invert Mouse"
+
+[node name="Label" type="Label" parent="VBoxContainer/TabContainer/Mouse/VBoxContainer/mouse_invert_box"]
+layout_mode = 2
+offset_left = 150.0
+offset_top = 6.5
+offset_right = 750.0
+offset_bottom = 44.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "Invert mouse up-down axis."
+label_settings = SubResource("LabelSettings_y8aee")
+
+[node name="Sound" type="TabBar" parent="VBoxContainer/TabContainer"]
+visible = false
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/TabContainer/Sound"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.025
+anchor_top = 0.025
+anchor_right = 0.975
+anchor_bottom = 0.975
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="Label2" type="Label" parent="VBoxContainer/TabContainer/Sound/VBoxContainer"]
+layout_mode = 2
+text = "Music volume"
+
+[node name="music_slider" type="HSlider" parent="VBoxContainer/TabContainer/Sound/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 1.0
+step = 0.01
+value = 1.0
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/TabContainer/Sound/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label3" type="Label" parent="VBoxContainer/TabContainer/Sound/VBoxContainer"]
+layout_mode = 2
+text = "SFX volume"
+
+[node name="sfx_slider" type="HSlider" parent="VBoxContainer/TabContainer/Sound/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 1.0
+step = 0.01
+value = 1.0
+
+[node name="Graphics" type="TabBar" parent="VBoxContainer/TabContainer"]
+visible = false
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/TabContainer/Graphics"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.025
+anchor_top = 0.025
+anchor_right = 0.975
+anchor_bottom = 0.975
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+alignment = 1
+
+[node name="Label2" type="Label" parent="VBoxContainer/TabContainer/Graphics/VBoxContainer"]
+layout_mode = 2
+text = "Resolution"
+
+[node name="resolutions_list" type="OptionButton" parent="VBoxContainer/TabContainer/Graphics/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+alignment = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/TabContainer/Graphics/VBoxContainer"]
+layout_mode = 2
+
+[node name="windowed_box" type="CheckBox" parent="VBoxContainer/TabContainer/Graphics/VBoxContainer"]
+layout_mode = 2
+text = "Run in a window"
+
+[node name="Label" type="Label" parent="VBoxContainer/TabContainer/Graphics/VBoxContainer/windowed_box"]
+layout_mode = 0
+offset_left = 200.0
+offset_top = 6.5
+offset_right = 800.0
+offset_bottom = 44.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "Runs the game in a window"
+label_settings = SubResource("LabelSettings_y8aee")
+
+[node name="vsync_box" type="CheckBox" parent="VBoxContainer/TabContainer/Graphics/VBoxContainer"]
+layout_mode = 2
+text = "VSync"
+
+[node name="Label" type="Label" parent="VBoxContainer/TabContainer/Graphics/VBoxContainer/vsync_box"]
+layout_mode = 0
+offset_left = 200.0
+offset_top = 6.5
+offset_right = 800.0
+offset_bottom = 44.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "Waits for vertical sync"
+label_settings = SubResource("LabelSettings_y8aee")
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+alignment = 2
+
+[node name="cancel_button" type="Button" parent="VBoxContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+text = "Cancel"
+
+[node name="apply_button" type="Button" parent="VBoxContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+text = "Apply"
+
+[node name="ok_button" type="Button" parent="VBoxContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+text = "Ok"
+
+[node name="awaiting_input" type="Control" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="BG2" type="ColorRect" parent="awaiting_input"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.686275)
+
+[node name="Panel" type="PanelContainer" parent="awaiting_input"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -140.5
+offset_top = -49.0
+offset_right = 140.5
+offset_bottom = 49.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="awaiting_input/Panel"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="awaiting_input/Panel/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Awaiting input...
+Press [ESC] to cancel..."
+horizontal_alignment = 1
+
+[connection signal="pressed" from="VBoxContainer/MarginContainer/HBoxContainer/cancel_button" to="." method="cancel_pressed"]
+[connection signal="pressed" from="VBoxContainer/MarginContainer/HBoxContainer/apply_button" to="." method="apply_pressed"]
+[connection signal="pressed" from="VBoxContainer/MarginContainer/HBoxContainer/ok_button" to="." method="ok_pressed"]

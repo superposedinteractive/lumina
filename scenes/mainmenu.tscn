@@ -1,0 +1,162 @@
+[gd_scene load_steps=5 format=3 uid="uid://7jwbl2mossb5"]
+
+[ext_resource type="Script" path="res://scripts/ui/mainmenu.gd" id="2_yk5dd"]
+[ext_resource type="Shader" path="res://mat/ui/chromatic.gdshader" id="4_ly422"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_aonqa"]
+shader = ExtResource("4_ly422")
+shader_parameter/r_displacement = Vector2(3, 0)
+shader_parameter/g_displacement = Vector2(0, 0)
+shader_parameter/b_displacement = Vector2(-3, 0)
+
+[sub_resource type="LabelSettings" id="LabelSettings_ransg"]
+font_size = 64
+
+[node name="bgmap" type="Node3D"]
+
+[node name="ColorRect" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_aonqa")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="UI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("2_yk5dd")
+
+[node name="copystring" type="Label" parent="UI"]
+layout_mode = 0
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -40.0
+offset_top = -24.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "Your copyright notice or something"
+horizontal_alignment = 2
+
+[node name="title" type="Label" parent="UI"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 32.0
+offset_right = 233.0
+offset_bottom = -32.0
+grow_vertical = 0
+text = "Lumina"
+label_settings = SubResource("LabelSettings_ransg")
+
+[node name="menubuttons" type="HBoxContainer" parent="UI"]
+layout_mode = 0
+offset_left = 32.0
+offset_top = 32.0
+offset_right = 371.0
+offset_bottom = 72.0
+
+[node name="newgame" type="Button" parent="UI/menubuttons"]
+layout_mode = 2
+text = "New game"
+flat = true
+
+[node name="VSeparator" type="VSeparator" parent="UI/menubuttons"]
+layout_mode = 2
+
+[node name="loadgame" type="Button" parent="UI/menubuttons"]
+layout_mode = 2
+text = "Load game"
+flat = true
+
+[node name="VSeparator2" type="VSeparator" parent="UI/menubuttons"]
+layout_mode = 2
+
+[node name="settings" type="Button" parent="UI/menubuttons"]
+layout_mode = 2
+text = "Settings"
+flat = true
+
+[node name="VSeparator3" type="VSeparator" parent="UI/menubuttons"]
+layout_mode = 2
+
+[node name="quit" type="Button" parent="UI/menubuttons"]
+layout_mode = 2
+text = "Quit"
+flat = true
+
+[node name="chapter_select" type="Window" parent="UI"]
+unique_name_in_owner = true
+initial_position = 2
+title = "New game"
+size = Vector2i(450, 150)
+visible = false
+transient = true
+unresizable = true
+popup_window = true
+min_size = Vector2i(450, 150)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/chapter_select"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="UI/chapter_select/VBoxContainer"]
+clip_contents = true
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ScrollContainer" type="ScrollContainer" parent="UI/chapter_select/VBoxContainer/MarginContainer"]
+clip_contents = false
+layout_mode = 2
+
+[node name="chapter_list" type="HBoxContainer" parent="UI/chapter_select/VBoxContainer/MarginContainer/ScrollContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+alignment = 1
+
+[node name="chapter_template" type="Panel" parent="UI/chapter_select/VBoxContainer/MarginContainer/ScrollContainer/chapter_list"]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(128, 100)
+layout_mode = 2
+
+[node name="Button" type="Button" parent="UI/chapter_select/VBoxContainer/MarginContainer/ScrollContainer/chapter_list/chapter_template"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "name"
+flat = true
+
+[node name="Label" type="RichTextLabel" parent="UI"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -441.0
+offset_top = 32.0
+offset_right = -32.0
+offset_bottom = 55.0
+grow_horizontal = 0
+bbcode_enabled = true
+text = "[b]Welcome to lumina![/b]
+This is the [code]scenes/mainmenu.tscn[/code] file, feel free to edit it to your heart's desires.
+
+Check out the GitHub Wiki for more documentation!"
+fit_content = true
+
+[connection signal="pressed" from="UI/menubuttons/newgame" to="UI" method="newgame_pressed"]
+[connection signal="pressed" from="UI/menubuttons/settings" to="UI" method="options_pressed"]
+[connection signal="pressed" from="UI/menubuttons/quit" to="UI" method="quit_pressed"]

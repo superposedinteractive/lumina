@@ -1,0 +1,13 @@
+[gd_resource type="Theme" load_steps=2 format=3 uid="uid://mxnsf5xnxwgi"]
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_hat3p"]
+color = Color(1, 1, 1, 1)
+vertical = true
+
+[resource]
+MarginContainer/constants/margin_bottom = 25
+MarginContainer/constants/margin_left = 25
+MarginContainer/constants/margin_right = 25
+MarginContainer/constants/margin_top = 25
+VSeparator/constants/separation = 4
+VSeparator/styles/separator = SubResource("StyleBoxLine_hat3p")

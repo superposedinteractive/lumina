@@ -1,0 +1,1057 @@
+[gd_scene load_steps=31 format=3 uid="uid://65ijn6huxa16"]
+
+[ext_resource type="Script" path="res://scripts/ent/player.gd" id="1_cq26p"]
+[ext_resource type="Script" path="res://scripts/ui/HUD.gd" id="2_4lqns"]
+[ext_resource type="PackedScene" uid="uid://fn4ue284pmgv" path="res://motion_blur/motion_blur.tscn" id="2_e685g"]
+[ext_resource type="Script" path="res://scripts/ui/mainmenu.gd" id="3_c0krd"]
+[ext_resource type="Texture2D" uid="uid://f5uscal3oqh0" path="res://mat/ui/img/hud/progressbar.png" id="3_sqyx4"]
+[ext_resource type="Texture2D" uid="uid://dys83djgpyr53" path="res://mat/ui/img/flashlight.png" id="3_tlpng"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_73jb6"]
+outline_size = 4
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_0an8p"]
+radius = 0.3
+height = 1.9
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_2osg2"]
+size = Vector2(20, 20)
+
+[sub_resource type="Animation" id="Animation_2vevt"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:anchor_left")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:anchor_right")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1.0]
+}
+
+[sub_resource type="Animation" id="Animation_g0y6h"]
+resource_name = "next"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:anchor_right")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(0),
+"update": 0,
+"values": [1.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:anchor_left")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(0.5, 1),
+"update": 0,
+"values": [1.01, 1.0]
+}
+
+[sub_resource type="Animation" id="Animation_hdy8k"]
+resource_name = "prev"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:anchor_right")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(0),
+"update": 0,
+"values": [0.99]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:anchor_left")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(0.5, 1),
+"update": 0,
+"values": [0.99, 1.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ea3dy"]
+_data = {
+"RESET": SubResource("Animation_2vevt"),
+"next": SubResource("Animation_g0y6h"),
+"prev": SubResource("Animation_hdy8k")
+}
+
+[sub_resource type="Shader" id="Shader_cyyp6"]
+code = "shader_type canvas_item;
+
+uniform vec2 topleft = vec2(0.01, 0.0);
+uniform vec2 topright;
+uniform vec2 bottomleft;
+uniform vec2 bottomright;
+
+
+float _cross( in vec2 a, in vec2 b ) { return a.x*b.y - a.y*b.x; }
+
+vec2 invBilinear( in vec2 p, in vec2 a, in vec2 b, in vec2 c, in vec2 d ) {
+	vec2 res = vec2(-1.0);
+
+	vec2 e = b-a;
+	vec2 f = d-a;
+	vec2 g = a-b+c-d;
+	vec2 h = p-a;
+
+	float k2 = _cross( g, f );
+	float k1 = _cross( e, f ) + _cross( h, g );
+	float k0 = _cross( h, e );
+
+	// if edges are parallel, use a linear equation.
+	if( abs(k2)<0.001 ) {
+		res = vec2( (h.x*k1+f.x*k0)/(e.x*k1-g.x*k0), -k0/k1 );
+	}
+	// otherwise, it's a quadratic
+	else {
+		float w = k1*k1 - 4.0*k0*k2;
+		if( w<0.0 ) return vec2(-1.0);
+		w = sqrt( w );
+
+		float ik2 = 0.5/k2;
+		float v = (-k1 - w)*ik2;
+		float u = (h.x - f.x*v)/(e.x + g.x*v);
+		
+		if( u<0.0 || u>1.0 || v<0.0 || v>1.0 ) {
+		v = (-k1 + w)*ik2;
+		   u = (h.x - f.x*v)/(e.x + g.x*v);
+		}
+		res = vec2( u, 1.0 - v );
+	}
+	
+	return res;
+}
+
+
+void fragment(){
+	vec2 topleftUV = topleft / vec2(textureSize(TEXTURE,0));  // compensates for screensize ratio
+	vec2 toprightUV = vec2(1.0,0.0)+topright / vec2(textureSize(TEXTURE,0));
+	vec2 bottomrightUV = vec2(1.0,1.0)+bottomright / vec2(textureSize(TEXTURE,0));
+	vec2 bottomleftUV =vec2(0.0,1.0)+ bottomleft / vec2(textureSize(TEXTURE,0));
+
+	vec2 newUV = invBilinear(UV, topleftUV, toprightUV, bottomrightUV, bottomleftUV);
+	
+	if (topleft.x == 0.0 || topright.x == 0.0) {
+		COLOR = texture(SCREEN_TEXTURE, UV);
+	}
+	else {
+		if (newUV == vec2(-1.0)){
+			COLOR = vec4(0.0);
+		}else {
+			COLOR = texture(SCREEN_TEXTURE, newUV);
+		}
+	}
+}"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_gifi6"]
+shader = SubResource("Shader_cyyp6")
+
+[sub_resource type="LabelSettings" id="LabelSettings_bseob"]
+font_size = 50
+
+[sub_resource type="LabelSettings" id="LabelSettings_dbk66"]
+
+[sub_resource type="Animation" id="Animation_7p5d0"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("HUD/info_stack/HP_num/power/power_bar:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("HUD/info_stack/HP_num/power/power_bar:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_xak83"]
+resource_name = "hide"
+length = 0.25
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("HUD/info_stack/HP_num/power/power_bar:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.25),
+"transitions": PackedFloat32Array(1, 0.5),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, 32)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("HUD/info_stack/HP_num/power/power_bar:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.25),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_3weld"]
+resource_name = "show"
+length = 0.25
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("HUD/info_stack/HP_num/power/power_bar:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.25),
+"transitions": PackedFloat32Array(0.5, 1),
+"update": 0,
+"values": [Vector2(0, 32), Vector2(0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("HUD/info_stack/HP_num/power/power_bar:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.25),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_x8yjp"]
+_data = {
+"RESET": SubResource("Animation_7p5d0"),
+"hide": SubResource("Animation_xak83"),
+"show": SubResource("Animation_3weld")
+}
+
+[sub_resource type="Animation" id="Animation_yes4d"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PP_Cont/PP_num:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(10, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PP_Cont/PP_num:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Seps/VSep1:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(0.5),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Seps/VSep2:scale")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(0.5),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_54utm"]
+resource_name = "pp_hide"
+length = 0.3
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PP_Cont/PP_num:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.25),
+"transitions": PackedFloat32Array(0.5, 1),
+"update": 0,
+"values": [Vector2(10, 0), Vector2(-50, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PP_Cont/PP_num:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.25),
+"transitions": PackedFloat32Array(1, 0.5),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Seps/VSep1:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.25),
+"transitions": PackedFloat32Array(0.5, 0.5),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1, 0)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Seps/VSep2:scale")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0.05, 0.3),
+"transitions": PackedFloat32Array(0.5, 0.5),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_4bw00"]
+resource_name = "pp_show"
+length = 0.3
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PP_Cont/PP_num:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.25),
+"transitions": PackedFloat32Array(1, 0.5),
+"update": 0,
+"values": [Vector2(-50, 0), Vector2(10, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PP_Cont/PP_num:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.25),
+"transitions": PackedFloat32Array(0.5, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Seps/VSep1:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.25),
+"transitions": PackedFloat32Array(0.5, 0.5),
+"update": 0,
+"values": [Vector2(1, 0), Vector2(1, 1)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Seps/VSep2:scale")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0.05, 0.3),
+"transitions": PackedFloat32Array(0.5, 0.5),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_uk74w"]
+_data = {
+"RESET": SubResource("Animation_yes4d"),
+"pp_hide": SubResource("Animation_54utm"),
+"pp_show": SubResource("Animation_4bw00")
+}
+
+[sub_resource type="LabelSettings" id="LabelSettings_fkp4g"]
+font_size = 25
+
+[sub_resource type="LabelSettings" id="LabelSettings_lconb"]
+font_size = 32
+
+[sub_resource type="Animation" id="Animation_f2l1t"]
+resource_name = "fade"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:visible_ratio")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1.0]
+}
+
+[sub_resource type="Animation" id="Animation_qm0o6"]
+resource_name = "showanim"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:visible_ratio")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 1.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_cjhbt"]
+_data = {
+"fade": SubResource("Animation_f2l1t"),
+"showanim": SubResource("Animation_qm0o6")
+}
+
+[node name="Player" type="CharacterBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.95, 0)
+script = ExtResource("1_cq26p")
+
+[node name="debug_hud" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="debug" type="Label" parent="debug_hud"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 56.0
+offset_bottom = 32.0
+text = "FPS: "
+
+[node name="SUBJECT_TO_CHANGE" type="Label" parent="debug_hud"]
+visible = false
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -201.5
+offset_top = 32.0
+offset_right = 201.5
+offset_bottom = 80.0
+grow_horizontal = 2
+text = "RADIANCE PRERELEASE PREVIEW
+EVERYTHING SEEN HERE IS SUBJECT TO CHANGE."
+label_settings = SubResource("LabelSettings_73jb6")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="standup_ray" type="RayCast3D" parent="."]
+unique_name_in_owner = true
+target_position = Vector3(0, 1.35, 0)
+
+[node name="body_collision" type="CollisionShape3D" parent="."]
+unique_name_in_owner = true
+shape = SubResource("CapsuleShape3D_0an8p")
+
+[node name="Head" type="Node3D" parent="."]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.65, 0)
+
+[node name="Camera3D" type="Camera3D" parent="Head"]
+transform = Transform3D(1, 0, -1.74846e-07, 0, 1, 0, 1.74846e-07, 0, 1, 0, 0, 2.96557)
+
+[node name="Camera" type="Camera3D" parent="Head"]
+current = true
+fov = 100.0
+
+[node name="motion_blur" parent="Head/Camera" instance=ExtResource("2_e685g")]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, -0.65)
+layers = 524288
+
+[node name="use_ray" type="RayCast3D" parent="Head/Camera"]
+unique_name_in_owner = true
+target_position = Vector3(0, 0, -1.5)
+collision_mask = 4294967295
+
+[node name="fullbright" type="OmniLight3D" parent="Head/Camera"]
+unique_name_in_owner = true
+visible = false
+light_indirect_energy = 16.0
+light_volumetric_fog_energy = 0.0
+light_specular = 0.0
+light_cull_mask = 4294443007
+omni_range = 8192.0
+omni_attenuation = 1e-05
+
+[node name="flashlight" type="SpotLight3D" parent="Head"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0177919, -0.0151436, -0.0375586)
+light_volumetric_fog_energy = 0.0
+light_projector = ExtResource("3_tlpng")
+light_cull_mask = 4294443007
+shadow_enabled = true
+spot_range = 10.0
+spot_angle = 40.0
+spot_angle_attenuation = 0.5
+
+[node name="HUD" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("2_4lqns")
+
+[node name="wep_select" type="HBoxContainer" parent="HUD"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_top = 32.0
+offset_right = -32.0
+grow_horizontal = 0
+
+[node name="label_wep_back" type="Label" parent="HUD/wep_select"]
+layout_mode = 2
+text = "<"
+vertical_alignment = 1
+
+[node name="wep_texture" type="TextureRect" parent="HUD/wep_select"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 64)
+layout_mode = 2
+texture = SubResource("PlaceholderTexture2D_2osg2")
+
+[node name="label_wep_name" type="Label" parent="HUD/wep_select/wep_texture"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -38.5
+offset_top = 3.0
+offset_right = 38.5
+offset_bottom = 27.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "weapon_name"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="label_wep_next" type="Label" parent="HUD/wep_select"]
+layout_mode = 2
+text = ">"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="wep_select_anim" type="AnimationPlayer" parent="HUD/wep_select"]
+unique_name_in_owner = true
+libraries = {
+"": SubResource("AnimationLibrary_ea3dy")
+}
+
+[node name="info_stack" type="HBoxContainer" parent="HUD"]
+material = SubResource("ShaderMaterial_gifi6")
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 32.0
+offset_top = -99.0
+offset_right = 224.0
+offset_bottom = -32.0
+grow_vertical = 0
+
+[node name="HP_num" type="Label" parent="HUD/info_stack"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(90, 0)
+layout_mode = 2
+text = "100"
+label_settings = SubResource("LabelSettings_bseob")
+
+[node name="Label" type="Label" parent="HUD/info_stack/HP_num"]
+layout_mode = 2
+offset_left = 4.0
+offset_top = 49.0
+offset_right = 62.0
+offset_bottom = 73.0
+size_flags_vertical = 1
+text = "health"
+label_settings = SubResource("LabelSettings_dbk66")
+vertical_alignment = 2
+
+[node name="power" type="Control" parent="HUD/info_stack/HP_num"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -107.0
+offset_bottom = -107.0
+grow_vertical = 0
+
+[node name="power_bar" type="TextureProgressBar" parent="HUD/info_stack/HP_num/power"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_right = 193.0
+offset_bottom = 31.9996
+grow_vertical = 0
+pivot_offset = Vector2(0, 25.987)
+step = 0.5
+value = 100.0
+nine_patch_stretch = true
+texture_progress = ExtResource("3_sqyx4")
+
+[node name="power_bar_anim" type="AnimationPlayer" parent="HUD/info_stack/HP_num/power/power_bar"]
+unique_name_in_owner = true
+root_node = NodePath("../../../../../..")
+libraries = {
+"": SubResource("AnimationLibrary_x8yjp")
+}
+
+[node name="Label" type="Label" parent="HUD/info_stack/HP_num/power/power_bar"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -82.0
+offset_top = -12.0
+offset_right = 82.0
+offset_bottom = 12.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "p   o   w   e   r"
+
+[node name="Seps" type="Control" parent="HUD/info_stack"]
+layout_mode = 2
+
+[node name="VSep1" type="VSeparator" parent="HUD/info_stack/Seps"]
+layout_mode = 2
+offset_right = 4.0
+offset_bottom = 67.0
+
+[node name="VSep2" type="VSeparator" parent="HUD/info_stack/Seps"]
+layout_mode = 2
+offset_left = 4.0
+offset_right = 8.0
+offset_bottom = 67.0
+
+[node name="PP_Cont" type="Control" parent="HUD/info_stack"]
+layout_mode = 2
+
+[node name="PP_num" type="Label" parent="HUD/info_stack/PP_Cont"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(90, 0)
+layout_mode = 2
+offset_left = 10.0
+offset_right = 100.0
+offset_bottom = 72.0
+text = "100"
+label_settings = SubResource("LabelSettings_bseob")
+
+[node name="Label" type="Label" parent="HUD/info_stack/PP_Cont/PP_num"]
+layout_mode = 1
+offset_left = 3.0
+offset_top = 49.0
+offset_right = 61.0
+offset_bottom = 73.0
+size_flags_vertical = 1
+text = "armour"
+label_settings = SubResource("LabelSettings_dbk66")
+vertical_alignment = 2
+
+[node name="hud_anim" type="AnimationPlayer" parent="HUD/info_stack"]
+unique_name_in_owner = true
+libraries = {
+"": SubResource("AnimationLibrary_uk74w")
+}
+
+[node name="ammo_stack" type="HBoxContainer" parent="HUD"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -32.0
+offset_bottom = -32.0
+grow_horizontal = 0
+grow_vertical = 0
+
+[node name="clip" type="Label" parent="HUD/ammo_stack"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(90, 0)
+layout_mode = 2
+text = "100"
+label_settings = SubResource("LabelSettings_bseob")
+horizontal_alignment = 1
+
+[node name="VSeparator" type="VSeparator" parent="HUD/ammo_stack"]
+layout_mode = 2
+
+[node name="ammo" type="Label" parent="HUD/ammo_stack"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "100"
+label_settings = SubResource("LabelSettings_fkp4g")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="weapon_info" type="VBoxContainer" parent="HUD"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.0
+anchor_top = 0.65
+anchor_right = 1.0
+anchor_bottom = 0.65
+offset_left = -29.0
+offset_top = -12.0
+offset_right = -32.0
+offset_bottom = 12.0
+grow_horizontal = 0
+grow_vertical = 2
+alignment = 2
+
+[node name="weapon_got" type="HBoxContainer" parent="HUD/weapon_info"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HUD/weapon_info/weapon_got"]
+layout_mode = 2
+text = "got"
+vertical_alignment = 1
+
+[node name="crosshair" type="Control" parent="HUD"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -8.0
+offset_top = -8.0
+offset_right = 8.0
+offset_bottom = 8.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(8, 8)
+
+[node name="center" type="ColorRect" parent="HUD/crosshair"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -1.0
+offset_top = -1.0
+offset_right = 1.0
+offset_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="top" type="ColorRect" parent="HUD/crosshair"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -1.0
+offset_right = 1.0
+offset_bottom = 2.0
+grow_horizontal = 2
+
+[node name="bottom" type="ColorRect" parent="HUD/crosshair"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -1.0
+offset_top = -2.0
+offset_right = 1.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="left" type="ColorRect" parent="HUD/crosshair"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -1.0
+offset_right = 2.0
+offset_bottom = 1.0
+grow_vertical = 2
+
+[node name="right" type="ColorRect" parent="HUD/crosshair"]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -2.0
+offset_top = -1.0
+offset_bottom = 1.0
+grow_horizontal = 0
+grow_vertical = 2
+
+[node name="always_visible_HUD" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="chapter_intro" type="Label" parent="always_visible_HUD"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.65
+anchor_right = 1.0
+anchor_bottom = 0.65
+offset_top = -22.0
+offset_bottom = 22.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "%CHAPTER TITLE%"
+label_settings = SubResource("LabelSettings_lconb")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="anim" type="AnimationPlayer" parent="always_visible_HUD/chapter_intro"]
+libraries = {
+"": SubResource("AnimationLibrary_cjhbt")
+}
+
+[node name="pause" type="Control" parent="."]
+unique_name_in_owner = true
+process_mode = 2
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("3_c0krd")
+
+[node name="ColorRect" type="ColorRect" parent="pause"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.392157)
+
+[node name="Label" type="Label" parent="pause"]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -636.0
+offset_top = -77.5
+offset_right = -144.0
+offset_bottom = 77.5
+grow_horizontal = 0
+grow_vertical = 2
+text = "paused"
+
+[node name="menubuttons" type="VBoxContainer" parent="pause"]
+custom_minimum_size = Vector2(256, 0)
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 160.0
+offset_top = -96.5
+offset_right = 416.0
+offset_bottom = 96.5
+grow_vertical = 2
+
+[node name="resume" type="Button" parent="pause/menubuttons"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "Resume game"
+flat = true
+
+[node name="HSeparator" type="HSeparator" parent="pause/menubuttons"]
+layout_mode = 2
+
+[node name="save" type="Button" parent="pause/menubuttons"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "Save game"
+flat = true
+
+[node name="HSeparator3" type="HSeparator" parent="pause/menubuttons"]
+layout_mode = 2
+
+[node name="load" type="Button" parent="pause/menubuttons"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "Load game"
+flat = true
+
+[node name="HSeparator4" type="HSeparator" parent="pause/menubuttons"]
+layout_mode = 2
+
+[node name="options" type="Button" parent="pause/menubuttons"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "Settings"
+flat = true
+
+[node name="HSeparator2" type="HSeparator" parent="pause/menubuttons"]
+layout_mode = 2
+
+[node name="quit" type="Button" parent="pause/menubuttons"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "Quit"
+flat = true
+
+[node name="power_tick" type="Timer" parent="."]
+wait_time = 0.1
+autostart = true
+
+[connection signal="pressed" from="pause/menubuttons/resume" to="pause" method="resume_pressed"]
+[connection signal="pressed" from="pause/menubuttons/options" to="pause" method="options_pressed"]
+[connection signal="pressed" from="pause/menubuttons/quit" to="pause" method="quit_pressed"]
+[connection signal="timeout" from="power_tick" to="." method="power_tick"]

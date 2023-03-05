@@ -1,0 +1,16 @@
+[gd_scene load_steps=2 format=3 uid="uid://ldwjorxa6jr8"]
+
+[ext_resource type="Script" path="res://scripts/ent/weapon.gd" id="1_2wtki"]
+
+[node name="weapon_pipeauto" type="Node3D"]
+script = ExtResource("1_2wtki")
+display_name = "pipe_auto"
+damage = 2
+base_accuracy = 50.0
+recoil = 6.0
+max_range = 1024.0
+clip_size = 180
+fire_rate = 0.064
+automatic = true
+ammo = 5
+fire_sound = "res://sound/player/weapon/pipeauto/smg1_fire1.wav"

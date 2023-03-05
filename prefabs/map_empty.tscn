@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://vp51epeplioh"]
+
+[ext_resource type="Environment" uid="uid://def065a5kx7hv" path="res://cfg/enviroment_empty.tres" id="1_p1s56"]
+
+[node name="map_empty" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = ExtResource("1_p1s56")

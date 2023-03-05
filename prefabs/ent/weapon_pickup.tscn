@@ -1,0 +1,23 @@
+[gd_scene load_steps=4 format=3 uid="uid://bv3xdhdn8u6hc"]
+
+[ext_resource type="Script" path="res://scripts/ent/weapon_pickup.gd" id="1_rebel"]
+[ext_resource type="Texture2D" uid="uid://rgmmmbuhbg1j" path="res://mat/dev/ent/weapon_pickup.png" id="2_wd7x2"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_ee000"]
+radius = 1.25
+
+[node name="weapon_pickup" type="Node3D"]
+script = ExtResource("1_rebel")
+
+[node name="collect_area" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="collect_area"]
+shape = SubResource("SphereShape3D_ee000")
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+billboard = 1
+double_sided = false
+texture_filter = 0
+texture = ExtResource("2_wd7x2")
+
+[connection signal="body_entered" from="collect_area" to="." method="collect"]

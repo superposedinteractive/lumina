@@ -1,0 +1,14 @@
+[gd_resource type="StandardMaterial3D" load_steps=3 format=3 uid="uid://6cyhkq0qbnky"]
+
+[ext_resource type="Texture2D" uid="uid://gd6p3h1yuf2b" path="res://mat/dev/trigger/trigger.png" id="1_cec3h"]
+[ext_resource type="Texture2D" uid="uid://bjkm2h5msvg6o" path="res://mat/dev/trigger/trigger_emission.png" id="2_8ovwo"]
+
+[resource]
+transparency = 1
+albedo_color = Color(1, 1, 1, 0.588235)
+albedo_texture = ExtResource("1_cec3h")
+emission_enabled = true
+emission_texture = ExtResource("2_8ovwo")
+uv1_scale = Vector3(2, 2, 2)
+uv1_triplanar = true
+uv1_world_triplanar = true

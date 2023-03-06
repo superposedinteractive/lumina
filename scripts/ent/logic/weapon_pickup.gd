@@ -7,6 +7,9 @@ var model : Node = null
 var body : Node3D
 
 func _ready():
+	if !ResourceLoader.exists("res://prefabs/weapons/" + weapon + ".tscn"):
+		error("weapon doesn't exist")
+
 	model = util.load_asset("res://models/weapons/w_" + weapon + ".glb")
 	add_child(model)
 

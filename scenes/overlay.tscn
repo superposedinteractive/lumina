@@ -3,7 +3,7 @@
 [sub_resource type="LabelSettings" id="LabelSettings_k0yvb"]
 font_size = 20
 
-[node name="loading" type="Control"]
+[node name="overlay" type="Control"]
 z_index = 90
 layout_mode = 3
 anchors_preset = 15
@@ -44,3 +44,28 @@ text = "loading"
 label_settings = SubResource("LabelSettings_k0yvb")
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="notif_container" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+offset_left = 32.0
+offset_top = 32.0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="preset" type="PanelContainer" parent="notif_container"]
+visible = false
+layout_mode = 2
+mouse_filter = 1
+
+[node name="margin" type="MarginContainer" parent="notif_container/preset"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="Label" type="Label" parent="notif_container/preset/margin"]
+layout_mode = 2
+mouse_filter = 1
+text = "Error"

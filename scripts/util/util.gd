@@ -10,6 +10,7 @@ var cheats = false
 @export var player_save : Resource
 @export var player_pos : Vector3 = Vector3.ZERO
 
+var overlay : Node
 var loading_screen : Node
 var subtitles : Node
 
@@ -34,30 +35,18 @@ func _ready():
 
 	process_mode = Node.PROCESS_MODE_ALWAYS
 
-	loading_screen = load("res://scenes/loading.tscn").instantiate()
+	overlay = load("res://scenes/overlay.tscn").instantiate()
+	loading_screen = overlay.get_node("loadingbox")
 	subtitles = load("res://scenes/subtitles.tscn").instantiate()
 
-	add_child(loading_screen)
+	add_child(overlay)
 	add_child(subtitles)
 
 	loading_screen.visible = false
 
-	var text : String
-	var file : FileAccess = FileAccess.open("user://gamestatus.dat", FileAccess.READ)
-	if file:
-		text = file.get_as_text()
-		file = null
-
 	await get_tree().create_timer(3).timeout
 
-	if text == "1":
-		get_tree().change_scene_to_file("res://scenes/congrats1.tscn")
-	elif text == "2":
-		get_tree().change_scene_to_file("res://scenes/congrats2.tscn")
-	elif text == "3":
-		get_tree().change_scene_to_file("res://scenes/congrats3.tscn")
-	else:
-		get_tree().change_scene_to_file("res://scenes/mainmenu.tscn")
+	get_tree().change_scene_to_file("res://scenes/mainmenu.tscn")
 
 func reload_subtitles():
 	print("reloading subtitles...")
@@ -92,6 +81,17 @@ func _notification(what):
 
 					if child.stream.get_path() in subtitles_json && (distance <= child.max_distance || child.max_distance == 0.0):
 						show_subtitle(subtitles_json[child.stream.get_path()], child.stream.get_length())
+
+func notif(msg : String):
+	util.playsfx("res://sound/ui/error.wav")
+	var preset = overlay.get_node("notif_container").get_node("preset").duplicate()
+	preset.get_child(0).get_child(0).text = str(msg)
+	preset.visible = true
+	overlay.get_node("notif_container").add_child(preset)
+	
+	await get_tree().create_timer(3).timeout
+	
+	preset.queue_free()
 
 func crash(reason):
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
@@ -150,6 +150,7 @@ func playsfx3D(sfx : String = "res://sound/vo/radiance_guy.wav", volume : float 
 
 func load_asset(path : String):
 	if path == "" || path == null || !ResourceLoader.exists(path):
+		notif("Requested asset: \"" + path + "\" failed to load, using default.glb")
 		path = "res://models/default.glb"
 
 	return load(path).instantiate()

@@ -8,4 +8,7 @@ func _ready():
 
 func use():
 	msg("used!")
-	target.trigger()
+	if target != null:
+		target.trigger()
+	else:
+		util.notif(str(self) + " Target is null, not deleting because collisions.")

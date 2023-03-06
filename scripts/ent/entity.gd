@@ -14,6 +14,7 @@ func trigger():
 	print("[" + str(self) + "] UNIMPLEMENTED TRIGGER FUNCTION")
 
 func error(msg):
+	util.notif("Something has gone wrong in " + str(self) + "\n" + msg)
 	print("[" + str(self) + "] ERROR: " + msg + "! Killing self.")
 	kill()
 

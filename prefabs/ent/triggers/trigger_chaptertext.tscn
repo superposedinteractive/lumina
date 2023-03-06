@@ -1,6 +1,6 @@
-[gd_scene load_steps=5 format=3 uid="uid://be7qxxknfg147"]
+[gd_scene load_steps=5 format=3 uid="uid://8qd63hq7i7s1"]
 
-[ext_resource type="Script" path="res://scripts/ent/triggers/chaptertext.gd" id="1_gwovf"]
+[ext_resource type="Script" path="res://scripts/ent/block/chaptertext.gd" id="1_qsyqx"]
 [ext_resource type="Material" uid="uid://6cyhkq0qbnky" path="res://mat/dev/trigger/trigger.tres" id="2_nrr5c"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_6a3ow"]
@@ -9,7 +9,7 @@
 material = ExtResource("2_nrr5c")
 
 [node name="trigger_chaptertext" type="Node3D"]
-script = ExtResource("1_gwovf")
+script = ExtResource("1_qsyqx")
 
 [node name="Area3D" type="Area3D" parent="."]
 

@@ -1,10 +1,4 @@
-extends Node3D
-
-func _process(delta):
-	if util.developer:
-		get_child(1).visible = true
-	else:
-		get_child(1).visible = false
+extends lumina_entity
 
 @export var power : bool = true
 

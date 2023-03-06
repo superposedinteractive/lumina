@@ -1,5 +1,7 @@
 extends CharacterBody3D
 
+class_name lumina_player
+
 var vars : ply_vars = ply_vars.new()
 
 @onready var camera = $Head/Camera
@@ -16,7 +18,9 @@ func _ready():
 	%fullbright.visible = false
 
 	%use_ray.add_exception(self)
-	#%use_ray.add_exception(get_node("body_collision"))
+
+func get_lumina_class():
+	return "lumina_player"
 
 func _input(event):
 	if event is InputEventMouseMotion:

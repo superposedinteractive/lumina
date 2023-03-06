@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://nhvw5e3iaiuf"]
+
+[ext_resource type="Script" path="res://scripts/ent/logic/ent_spawner.gd" id="1_vcwax"]
+[ext_resource type="Texture2D" uid="uid://blb8j013gjlq7" path="res://mat/dev/ent/ent_spawner.png" id="2_jyh7k"]
+
+[node name="ent_spawner" type="Node3D"]
+script = ExtResource("1_vcwax")
+
+[node name="dev" type="Sprite3D" parent="."]
+billboard = 1
+double_sided = false
+texture_filter = 0
+texture = ExtResource("2_jyh7k")

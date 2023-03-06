@@ -1,10 +1,4 @@
-extends Node
-
-func _process(delta):
-	if util.developer:
-		get_child(1).visible = true
-	else:
-		get_child(1).visible = false
+extends lumina_entity
 
 @export var damage : int = 10
 @export var type : String = "generic"
@@ -28,7 +22,10 @@ func _on_body_exited(body):
 	timer.stop()
 
 func _on_Timer_timeout():
+	trigger()
+
+func trigger():
 	var bodies = $Area3D.get_overlapping_bodies()
 	for body in bodies:
-		if body.name == "Player":
+		if body.has_method("damage"):
 			body.damage(type, damage, knockback)

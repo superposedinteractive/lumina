@@ -1,4 +1,4 @@
-extends Node
+extends lumina_entity
 
 @export var soundpath : String = ""
 
@@ -17,5 +17,3 @@ func use():
 
 		%anim.play("idle")
 		used = false
-
-		

@@ -1,6 +1,6 @@
 [gd_resource type="Environment" load_steps=4 format=3 uid="uid://cxmqtpqvwsnn6"]
 
-[ext_resource type="Texture2D" uid="uid://duq6uc6hq1tf6" path="res://mat/sky/shadersky/skybox.png" id="1_g4rhr"]
+[ext_resource type="Texture2D" uid="uid://cuuxkx0i36h66" path="res://mat/sky/shadersky/skybox.png" id="1_g4rhr"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_7x0ig"]
 panorama = ExtResource("1_g4rhr")
@@ -11,8 +11,9 @@ sky_material = SubResource("PanoramaSkyMaterial_7x0ig")
 [resource]
 background_mode = 2
 sky = SubResource("Sky_xlske")
+ambient_light_color = Color(0.294118, 0.294118, 0.294118, 1)
 ambient_light_sky_contribution = 0.0
-reflected_light_source = 1
+reflected_light_source = 2
 glow_enabled = true
 glow_normalized = true
 glow_bloom = 1.0

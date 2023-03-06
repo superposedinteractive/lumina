@@ -35,6 +35,7 @@ project/assembly_name="LUMINA"
 
 [editor]
 
+run/main_run_args="--dev"
 movie_writer/mix_rate=44100
 movie_writer/disable_vsync=true
 movie_writer/fps=240

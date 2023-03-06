@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=3 uid="uid://65ijn6huxa16"]
+[gd_scene load_steps=32 format=3 uid="uid://65ijn6huxa16"]
 
 [ext_resource type="Script" path="res://scripts/ent/player.gd" id="1_cq26p"]
 [ext_resource type="Script" path="res://scripts/ui/HUD.gd" id="2_4lqns"]
@@ -531,6 +531,9 @@ _data = {
 "showanim": SubResource("Animation_qm0o6")
 }
 
+[sub_resource type="LabelSettings" id="LabelSettings_ramot"]
+font_size = 128
+
 [node name="Player" type="CharacterBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.95, 0)
 script = ExtResource("1_cq26p")
@@ -992,6 +995,7 @@ offset_bottom = 77.5
 grow_horizontal = 0
 grow_vertical = 2
 text = "paused"
+label_settings = SubResource("LabelSettings_ramot")
 
 [node name="menubuttons" type="VBoxContainer" parent="pause"]
 custom_minimum_size = Vector2(256, 0)

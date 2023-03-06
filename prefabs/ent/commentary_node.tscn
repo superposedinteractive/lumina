@@ -1,6 +1,6 @@
-[gd_scene load_steps=12 format=3 uid="uid://diglggkid5v2h"]
+[gd_scene load_steps=12 format=3 uid="uid://5yqjhii1jg6e"]
 
-[ext_resource type="Script" path="res://scripts/ent/commentary_node.gd" id="1_ookly"]
+[ext_resource type="Script" path="res://scripts/ent/game/commentary_node.gd" id="1_ookly"]
 [ext_resource type="Texture2D" uid="uid://bwfy5tacxdleo" path="res://models/extra/commentary_node_4.png" id="2_lwaxr"]
 [ext_resource type="Script" path="res://scripts/util/redirect_use_to_parent.gd" id="3_7mqng"]
 
@@ -123,6 +123,7 @@ script = ExtResource("1_ookly")
 transform = Transform3D(0.998305, -0.0581938, 0, 0.0581938, 0.998305, 0, 0, 0, 1, 0, -0.0471526, 0)
 mesh = SubResource("ArrayMesh_japmm")
 skeleton = NodePath("")
+script = ExtResource("3_7mqng")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="Cube"]
 script = ExtResource("3_7mqng")

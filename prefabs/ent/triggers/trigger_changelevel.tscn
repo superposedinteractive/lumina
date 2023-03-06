@@ -1,7 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://b8qaefkky5uuk"]
+[gd_scene load_steps=5 format=3 uid="uid://d2ffexs14qxq1"]
 
-[ext_resource type="Script" path="res://scripts/ent/triggers/changelevel.gd" id="1_kqe4f"]
-[ext_resource type="Material" uid="uid://brayhax2prbm6" path="res://mat/dev/trigger/trigger.tres" id="2_h32ah"]
+[ext_resource type="Script" path="res://scripts/ent/block/changelevel.gd" id="1_x3s7j"]
+[ext_resource type="Material" uid="uid://6cyhkq0qbnky" path="res://mat/dev/trigger/trigger.tres" id="2_h32ah"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_6a3ow"]
 
@@ -9,7 +9,7 @@
 material = ExtResource("2_h32ah")
 
 [node name="trigger_changelevel" type="Node3D"]
-script = ExtResource("1_kqe4f")
+script = ExtResource("1_x3s7j")
 
 [node name="Area3D" type="Area3D" parent="."]
 

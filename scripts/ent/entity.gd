@@ -1,0 +1,21 @@
+extends Node
+
+class_name lumina_entity
+
+func _process(delta):
+	if get_node_or_null("dev") != null:
+			get_node("dev").visible = util.developer
+
+func kill():
+	print("[" + str(self) + "] Bye bye")
+	queue_free()
+
+func trigger():
+	print("[" + str(self) + "] UNIMPLEMENTED TRIGGER FUNCTION")
+
+func error(msg):
+	print("[" + str(self) + "] ERROR: " + msg + "! Killing self.")
+	kill()
+
+func msg(msg):
+	print("[" + str(self) + "] " + str(msg))

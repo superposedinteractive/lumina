@@ -43,10 +43,14 @@ var hidden = true
 
 var clip : int = 0
 
-@onready var model : Node3D = load("res://models/weapons/" + name + ".glb").instantiate()
-@onready var model_anim : AnimationPlayer = model.get_node("AnimationPlayer")
+@onready var model : Node3D = util.load_asset("res://models/weapons/" + name + ".glb")
+@onready var model_anim : AnimationPlayer = model.get_node_or_null("AnimationPlayer")
 
 func _ready():
+	if model_anim == null:
+		model_anim = AnimationPlayer.new()
+		model.add_child(model_anim) # Preventing crashes goes wrrrrrrrrr
+	
 	model.name = "model"
 	model_anim.playback_default_blend_time = 0.1
 	add_child(model)

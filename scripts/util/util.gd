@@ -65,10 +65,6 @@ func reload_subtitles():
 	subtitles_json = JSON.parse_string(jsonfile.get_as_text())
 
 func _process(_delta):
-	if player_node != null:
-		if player_node.name != "Player":
-			player_node.name = "Player"
-	
 	get_tree().root.move_child(self, get_tree().root.get_child_count() - 1)
 
 func _input(event):
@@ -130,7 +126,7 @@ func playsfx(sfx: String, volume = 0.0, pitch = 1.0, parent : Node = null, loop 
 
 	player.play()
 
-func playsfx3D(sfx : String = "", volume : float = 0.0, pitch : float = 1.0, range : float = 10.0, parent : Node = null, loop : bool = false, position : Vector3 = Vector3.ZERO):
+func playsfx3D(sfx : String = "res://sound/vo/radiance_guy.wav", volume : float = 0.0, pitch : float = 1.0, range : float = 10.0, parent : Node = null, loop : bool = false, position : Vector3 = Vector3.ZERO):
 	var player = AudioStreamPlayer3D.new()
 
 	parent.add_child(player)
@@ -151,6 +147,12 @@ func playsfx3D(sfx : String = "", volume : float = 0.0, pitch : float = 1.0, ran
 		show_subtitle(subtitles_json[sfx], player.stream.get_length())
 
 	player.play()
+
+func load_asset(path : String):
+	if path == "" || path == null || !ResourceLoader.exists(path):
+		path = "res://models/default.glb"
+
+	return load(path).instantiate()
 
 func sfxlength(sfx : String):
 	var player = AudioStreamPlayer.new()
@@ -338,3 +340,4 @@ func hitscan_bullet(attacker : Node, damage : int, range : float, spread : float
 	timer.start()
 
 	return ray
+

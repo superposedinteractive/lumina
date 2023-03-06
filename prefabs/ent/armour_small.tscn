@@ -1,31 +1,17 @@
-[gd_scene load_steps=5 format=3 uid="uid://bw5s3ea7q7yyq"]
+[gd_scene load_steps=3 format=3 uid="uid://bmw5mdy2vp4n7"]
 
-[ext_resource type="Script" path="res://scripts/ent/armour_pickup.gd" id="1_sn40t"]
+[ext_resource type="Script" path="res://scripts/ent/game/armour.gd" id="1_sn40t"]
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_4oxx6"]
-size = Vector3(0.65, 0.25, 0.5)
+[sub_resource type="SphereShape3D" id="SphereShape3D_d525q"]
+radius = 1.25
 
-[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_kjaw1"]
-points = PackedVector3Array(0.260261, 0.0246875, 0.025, 0.264373, 0.0245039, 0.025, 0.260261, 0.0246875, -0.025, -0.239109, 0.0246875, 0.025, 0.271946, 0.022987, 0.025, 0.264373, 0.0245039, -0.025, -0.239109, 0.0246875, -0.025, -0.242517, 0.0245757, 0.025, 0.275571, 0.0214062, 0.025, 0.271946, 0.022987, -0.025, -0.242517, 0.0245757, -0.025, -0.247548, 0.0240089, 0.025, 0.275571, 0.0214062, -0.025, 0.272487, 0.010149, 0.025, -0.247548, 0.0240089, -0.025, -0.255068, 0.0221966, 0.025, 0.272487, 0.010149, -0.025, 0.226072, -0.0550068, 0.025, -0.255068, 0.0221966, -0.025, -0.259828, 0.0205679, 0.025, 0.226072, -0.0550068, -0.025, 0.134702, -0.0568431, 0.025, -0.259828, 0.0205679, -0.025, -0.26513, 0.0182845, 0.025, 0.134702, -0.0568431, -0.025, 0.133079, -0.056875, 0.025, -0.26513, 0.0182845, -0.025, -0.269836, 0.0158734, 0.025, 0.133079, -0.056875, -0.025, -0.250632, -0.056875, 0.025, -0.269836, 0.0158734, -0.025, -0.273785, 0.0134303, 0.025, -0.250632, -0.056875, -0.025, -0.255825, -0.0565157, 0.025, -0.273785, 0.0134303, -0.025, -0.277031, -0.0348477, 0.025, -0.255825, -0.0565157, -0.025, -0.260694, -0.0554299, 0.025, -0.277031, -0.0348477, -0.025, -0.276923, -0.0373626, 0.025, -0.260694, -0.0554299, -0.025, -0.268484, -0.0516775, 0.025, -0.276923, -0.0373626, -0.025, -0.275841, -0.0423205, 0.025, -0.268484, -0.0516775, -0.025, -0.272162, -0.0483723, 0.025, -0.275841, -0.0423205, -0.025, -0.272162, -0.0483723, -0.025)
-
-[sub_resource type="TextMesh" id="TextMesh_ulypb"]
-text = "armour"
-
-[node name="armour_small" type="RigidBody3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0)
+[node name="armour_small" type="Node3D"]
 script = ExtResource("1_sn40t")
 amount = 2
 
-[node name="Area3D" type="Area3D" parent="."]
+[node name="collect_area" type="Area3D" parent="."]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
-shape = SubResource("BoxShape3D_4oxx6")
+[node name="CollisionShape3D" type="CollisionShape3D" parent="collect_area"]
+shape = SubResource("SphereShape3D_d525q")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-shape = SubResource("ConvexPolygonShape3D_kjaw1")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-mesh = SubResource("TextMesh_ulypb")
-
-[connection signal="body_entered" from="." to="." method="touch"]
-[connection signal="body_entered" from="Area3D" to="." method="touch"]
+[connection signal="body_entered" from="collect_area" to="." method="touch"]

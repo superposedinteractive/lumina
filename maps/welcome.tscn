@@ -1,10 +1,9 @@
-[gd_scene load_steps=11 format=3 uid="uid://cnhgsfvwd0ujb"]
+[gd_scene load_steps=10 format=3 uid="uid://cnhgsfvwd0ujb"]
 
 [ext_resource type="PackedScene" uid="uid://vp51epeplioh" path="res://prefabs/map_empty.tscn" id="1_5chxy"]
 [ext_resource type="PackedScene" uid="uid://bwnxv0u6mts3x" path="res://prefabs/ent/player_spawn.tscn" id="1_ksfyf"]
-[ext_resource type="PackedScene" uid="uid://y85dgy3tfu68" path="res://prefabs/ent/weapon_pickup.tscn" id="3_6ba8p"]
 [ext_resource type="PackedScene" uid="uid://nhvw5e3iaiuf" path="res://prefabs/ent/game/ent_spawner.tscn" id="4_bno5u"]
-[ext_resource type="PackedScene" uid="uid://c47a3x61oyfrn" path="res://prefabs/ent/button.tscn" id="5_an0wm"]
+[ext_resource type="PackedScene" uid="uid://c47a3x61oyfrn" path="res://prefabs/ent/logic/button.tscn" id="5_an0wm"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_v17ty"]
 size = Vector2(8, 8)
@@ -42,6 +41,15 @@ mesh = SubResource("PlaneMesh_v17ty")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D2/StaticBody3D"]
 shape = SubResource("ConcavePolygonShape3D_27aln")
 
+[node name="MeshInstance3D5" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 24)
+mesh = SubResource("PlaneMesh_v17ty")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="MeshInstance3D5"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D5/StaticBody3D"]
+shape = SubResource("ConcavePolygonShape3D_27aln")
+
 [node name="MeshInstance3D3" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 6)
 mesh = SubResource("PlaneMesh_ri17x")
@@ -49,6 +57,15 @@ mesh = SubResource("PlaneMesh_ri17x")
 [node name="StaticBody3D" type="StaticBody3D" parent="MeshInstance3D3"]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D3/StaticBody3D"]
+shape = SubResource("ConcavePolygonShape3D_a347p")
+
+[node name="MeshInstance3D4" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 18)
+mesh = SubResource("PlaneMesh_ri17x")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="MeshInstance3D4"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D4/StaticBody3D"]
 shape = SubResource("ConcavePolygonShape3D_a347p")
 
 [node name="player_spawn" parent="." instance=ExtResource("1_ksfyf")]
@@ -63,7 +80,7 @@ font_size = 128
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.64388, -6)
 billboard = 1
 text = "If you don't see dev stuff
-launch the game with the -dev paramater
+launch the game with the developer paramater
 
 Project > Project Settings... > Editor > Run
 Main run args: \"--dev\""
@@ -73,13 +90,31 @@ vertical_alignment = 0
 transform = Transform3D(-0.866025, 0.25, -0.433013, 0, 0.866025, 0.5, 0.5, 0.433013, -0.75, 0, 2, 0)
 shadow_enabled = true
 
-[node name="weapon_pickup" parent="." instance=ExtResource("3_6ba8p")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 13)
-
 [node name="ent_spawner" parent="." instance=ExtResource("4_bno5u")]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 2, 1, 10)
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 2, 1, 14)
 ent_name = "example/example"
 
 [node name="button" parent="." node_paths=PackedStringArray("target") instance=ExtResource("5_an0wm")]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 2, 1, 9)
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 2, 1, 10)
 target = NodePath("../ent_spawner")
+
+[node name="Label3D3" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 8)
+billboard = 1
+text = "Basic logic"
+
+[node name="Label3D4" type="Label3D" parent="."]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 2, 3, 12)
+billboard = 1
+text = "The way that logic is handled within
+Lumina should be similar to something like
+Valve's Source engine.
+
+Input entities, Output entities.
+
+In this example, we have a button entity
+conneceted to this ent_spawner entity.
+
+Once you press the button with your interaction key
+the button will call the \"trigger()\" method on the
+ent_spawner."

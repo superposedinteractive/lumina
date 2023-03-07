@@ -11,7 +11,7 @@ func kill():
 	queue_free()
 
 func trigger():
-	print("[" + str(self) + "] UNIMPLEMENTED TRIGGER FUNCTION")
+	msg("UNIMPLEMENTED TRIGGER FUNCTION")
 
 func error(msg):
 	util.notif("Something has gone wrong in " + str(self) + "\n" + msg)

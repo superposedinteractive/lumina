@@ -88,8 +88,8 @@ func _process(delta):
 	if vars.player_frozen:
 		return
 
-	rotation.y -= vars.mouse_delta.x * vars.mouse_sense * delta
-	head.rotation.x -= vars.mouse_delta.y * vars.mouse_sense * delta
+	rotation.y -= vars.mouse_delta.x * (vars.mouse_sense / 50)
+	head.rotation.x -= vars.mouse_delta.y * (vars.mouse_sense / 50)
 	head.rotation.x = clamp(head.rotation.x, -deg_to_rad(90), deg_to_rad(90))
 
 	%HP_num.text = str(floor(vars.health))

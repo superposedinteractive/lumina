@@ -91,7 +91,7 @@ transform = Transform3D(-0.866025, 0.25, -0.433013, 0, 0.866025, 0.5, 0.5, 0.433
 shadow_enabled = true
 
 [node name="ent_spawner" parent="." instance=ExtResource("4_bno5u")]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 2, 1, 14)
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 2, 2, 14)
 ent_name = "example/example"
 
 [node name="button" parent="." node_paths=PackedStringArray("target") instance=ExtResource("5_an0wm")]

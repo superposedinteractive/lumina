@@ -3,12 +3,13 @@ extends lumina_entity
 @export var target : lumina_entity
 
 func _ready():
-	if target == null:
-		error("target is null")
+	if !target is lumina_entity:
+		util.notif(str(self) + " Target isn't a lumina_entity or doesn't exist.")
 
 func use():
+	if !target is lumina_entity:
+		util.notif(str(self) + " Target isn't a lumina_entity or doesn't exist.")
+		return
+	
 	msg("used!")
-	if target != null:
-		target.trigger()
-	else:
-		util.notif(str(self) + " Target is null, not deleting because collisions.")
+	target.trigger()

@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://c7ofr51yq10ya"]
+
+[ext_resource type="Script" path="res://scripts/ent/logic/ent_propagator.gd" id="1_cljfa"]
+[ext_resource type="Texture2D" uid="uid://ger3bwlqwfq3" path="res://mat/dev/ent/ent_propagator.png" id="2_j684w"]
+
+[node name="ent_propagator" type="Node3D"]
+script = ExtResource("1_cljfa")
+
+[node name="dev" type="Sprite3D" parent="."]
+billboard = 1
+texture_filter = 0
+texture = ExtResource("2_j684w")

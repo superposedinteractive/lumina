@@ -3,6 +3,13 @@ extends MeshInstance3D
 var cam_pos_prev = Vector3()
 var cam_rot_prev = Quaternion()
 
+func _init():
+	_load_settings()
+	SettingsManager.settings_changed.connect(_load_settings)
+
+func _load_settings():
+	visible = SettingsManager.get_setting('motion_blur')
+
 func _process(_delta):
 	
 	#OS.delay_msec(30)

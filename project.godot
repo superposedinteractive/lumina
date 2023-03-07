@@ -22,6 +22,7 @@ boot_splash/minimum_display_time=500
 [autoload]
 
 util="*res://scripts/util/util.gd"
+SettingsManager="*res://scripts/util/settings_manager.gd"
 
 [display]
 

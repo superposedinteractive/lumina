@@ -89,9 +89,9 @@ func notif(msg : String):
 	preset.visible = true
 	overlay.get_node("notif_container").add_child(preset)
 	
-	await get_tree().create_timer(3).timeout
+#	await get_tree().create_timer(3).timeout
 	
-	preset.queue_free()
+#	preset.queue_free()
 
 func crash(reason):
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)

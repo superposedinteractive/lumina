@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://ua7m6hno7q6h"]
+
+[ext_resource type="Script" path="res://scripts/ent/logic/ent_player.gd" id="1_jn0hh"]
+[ext_resource type="Texture2D" uid="uid://b1ja4jorjmb1t" path="res://mat/dev/ent/ent_player.png" id="2_qumc3"]
+
+[node name="ent_player" type="Node3D"]
+script = ExtResource("1_jn0hh")
+
+[node name="dev" type="Sprite3D" parent="."]
+billboard = 1
+texture_filter = 0
+texture = ExtResource("2_qumc3")

@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://3ykajl8vjvu3"]
+
+[ext_resource type="Script" path="res://scripts/ent/logic/ent_flagger.gd" id="1_cel5x"]
+[ext_resource type="Texture2D" uid="uid://cuwgab0ve480w" path="res://mat/dev/ent/ent_flagger.png" id="1_cnwdr"]
+
+[node name="ent_flagger" type="Node3D"]
+script = ExtResource("1_cel5x")
+
+[node name="dev" type="Sprite3D" parent="."]
+billboard = 1
+texture_filter = 0
+texture = ExtResource("1_cnwdr")

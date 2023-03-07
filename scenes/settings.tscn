@@ -277,6 +277,7 @@ alignment = 1
 layout_mode = 2
 
 [node name="windowed_box" type="CheckBox" parent="VBoxContainer/TabContainer/Graphics/VBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 text = "Run in a window"
 
@@ -292,6 +293,7 @@ text = "Runs the game in a window"
 label_settings = SubResource("LabelSettings_y8aee")
 
 [node name="vsync_box" type="CheckBox" parent="VBoxContainer/TabContainer/Graphics/VBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 text = "VSync"
 
@@ -304,6 +306,54 @@ offset_bottom = 44.5
 grow_horizontal = 2
 grow_vertical = 2
 text = "Waits for vertical sync"
+label_settings = SubResource("LabelSettings_y8aee")
+
+[node name="glow_box" type="CheckBox" parent="VBoxContainer/TabContainer/Graphics/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Glow"
+
+[node name="Label" type="Label" parent="VBoxContainer/TabContainer/Graphics/VBoxContainer/glow_box"]
+layout_mode = 0
+offset_left = 200.0
+offset_top = 6.5
+offset_right = 800.0
+offset_bottom = 44.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "Enables glow effect"
+label_settings = SubResource("LabelSettings_y8aee")
+
+[node name="fog_box" type="CheckBox" parent="VBoxContainer/TabContainer/Graphics/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Volumetric fog"
+
+[node name="Label" type="Label" parent="VBoxContainer/TabContainer/Graphics/VBoxContainer/fog_box"]
+layout_mode = 0
+offset_left = 200.0
+offset_top = 6.5
+offset_right = 800.0
+offset_bottom = 44.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "Enables volumetric fog"
+label_settings = SubResource("LabelSettings_y8aee")
+
+[node name="motionblur_box" type="CheckBox" parent="VBoxContainer/TabContainer/Graphics/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Motion blur"
+
+[node name="Label" type="Label" parent="VBoxContainer/TabContainer/Graphics/VBoxContainer/motionblur_box"]
+layout_mode = 0
+offset_left = 200.0
+offset_top = 6.5
+offset_right = 800.0
+offset_bottom = 44.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "Enables motion blur"
 label_settings = SubResource("LabelSettings_y8aee")
 
 [node name="MarginContainer" type="MarginContainer" parent="VBoxContainer"]

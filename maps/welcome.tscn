@@ -1,6 +1,6 @@
 [gd_scene load_steps=10 format=3 uid="uid://cnhgsfvwd0ujb"]
 
-[ext_resource type="PackedScene" uid="uid://vp51epeplioh" path="res://prefabs/map_empty.tscn" id="1_5chxy"]
+[ext_resource type="PackedScene" uid="uid://dsm52adrfam01" path="res://prefabs/map_empty.tscn" id="1_5chxy"]
 [ext_resource type="PackedScene" uid="uid://bwnxv0u6mts3x" path="res://prefabs/ent/player_spawn.tscn" id="1_ksfyf"]
 [ext_resource type="PackedScene" uid="uid://nhvw5e3iaiuf" path="res://prefabs/ent/game/ent_spawner.tscn" id="4_bno5u"]
 [ext_resource type="PackedScene" uid="uid://c47a3x61oyfrn" path="res://prefabs/ent/logic/button.tscn" id="5_an0wm"]

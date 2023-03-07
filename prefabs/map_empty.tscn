@@ -1,8 +1,10 @@
-[gd_scene load_steps=2 format=3 uid="uid://vp51epeplioh"]
+[gd_scene load_steps=3 format=3 uid="uid://dsm52adrfam01"]
 
-[ext_resource type="Environment" uid="uid://def065a5kx7hv" path="res://cfg/enviroment_empty.tres" id="1_p1s56"]
+[ext_resource type="Environment" uid="uid://cxmqtpqvwsnn6" path="res://cfg/enviroment_empty.tres" id="1_p1s56"]
+[ext_resource type="Script" path="res://scripts/util/world_environment.gd" id="2_01fps"]
 
 [node name="map_empty" type="Node3D"]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = ExtResource("1_p1s56")
+script = ExtResource("2_01fps")

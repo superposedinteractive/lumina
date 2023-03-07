@@ -22,7 +22,7 @@ const KB_INPUTS = {
 }
 
 const RESOLUTIONS = {
-	"Monitor's Native" : Vector2(0, 0),
+	"Monitor's Native" : Vector2(-1, -1),
 	"1920x1080" : Vector2(1920, 1080),
 	"1440x1080" : Vector2(1440, 1080),
 	"1600x900" : Vector2(1600, 900),
@@ -63,8 +63,17 @@ func _ready():
 	%resolutions_list.clear()
 	for key in RESOLUTIONS:
 		%resolutions_list.add_item(key)
+		%resolutions_list.set_item_metadata(%resolutions_list.item_count-1, RESOLUTIONS[key])
 		
-
+		if SettingsManager.get_setting('window_w') == RESOLUTIONS[key].x and SettingsManager.get_setting('window_h') == RESOLUTIONS[key].y:
+			%resolutions_list.selected = %resolutions_list.item_count-1
+	
+	%windowed_box.set_pressed_no_signal(SettingsManager.get_setting('windowed'))
+	%vsync_box.set_pressed_no_signal(SettingsManager.get_setting('vsync'))
+	%glow_box.set_pressed_no_signal(SettingsManager.get_setting('glow'))
+	%fog_box.set_pressed_no_signal(SettingsManager.get_setting('volumetric_fog'))
+	%motionblur_box.set_pressed_no_signal(SettingsManager.get_setting('motion_blur'))
+	
 func bind_key(key):
 	bind = key.name
 	%awaiting_input.visible = true
@@ -74,7 +83,14 @@ func ok_pressed():
 	queue_free()
 
 func apply_pressed():
-	pass # Replace with function body.
+	SettingsManager.set_setting('window_w', %resolutions_list.get_selected_metadata().x)
+	SettingsManager.set_setting('window_h', %resolutions_list.get_selected_metadata().y)
+	SettingsManager.set_setting('windowed', %windowed_box.is_pressed())
+	SettingsManager.set_setting('vsync', %vsync_box.is_pressed())
+	SettingsManager.set_setting('glow', %glow_box.is_pressed())
+	SettingsManager.set_setting('volumetric_fog', %fog_box.is_pressed())
+	SettingsManager.set_setting('motion_blur', %motionblur_box.is_pressed())
+	SettingsManager.save_settings()
 
 func cancel_pressed():
 	queue_free()

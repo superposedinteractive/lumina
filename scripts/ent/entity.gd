@@ -7,7 +7,7 @@ func _process(delta):
 			get_node("dev").visible = util.developer
 
 func kill():
-	print("[" + str(self) + "] Bye bye")
+	msg("Bye bye")
 	queue_free()
 
 func trigger():
@@ -15,7 +15,7 @@ func trigger():
 
 func error(msg):
 	util.notif("Something has gone wrong in " + str(self) + "\n" + msg)
-	print("[" + str(self) + "] ERROR: " + msg + "! Killing self.")
+	msg("ERROR: " + msg + "! Killing self.")
 	kill()
 
 func msg(msg):

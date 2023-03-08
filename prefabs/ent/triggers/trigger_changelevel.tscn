@@ -1,6 +1,6 @@
-[gd_scene load_steps=5 format=3 uid="uid://d2ffexs14qxq1"]
+[gd_scene load_steps=5 format=3]
 
-[ext_resource type="Script" path="res://scripts/ent/block/changelevel.gd" id="1_x3s7j"]
+[ext_resource type="Script" path="res://scripts/ent/block/triggers/trigger_changelevel.gd" id="1_x3s7j"]
 [ext_resource type="Material" uid="uid://6cyhkq0qbnky" path="res://mat/dev/trigger/trigger.tres" id="2_h32ah"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_6a3ow"]
@@ -16,7 +16,7 @@ script = ExtResource("1_x3s7j")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
 shape = SubResource("BoxShape3D_6a3ow")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+[node name="dev" type="MeshInstance3D" parent="."]
 mesh = SubResource("BoxMesh_fo80m")
 
 [connection signal="body_entered" from="Area3D" to="." method="_on_body_entered"]

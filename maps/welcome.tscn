@@ -1,7 +1,8 @@
-[gd_scene load_steps=20 format=3 uid="uid://cnhgsfvwd0ujb"]
+[gd_scene load_steps=21 format=3 uid="uid://cnhgsfvwd0ujb"]
 
 [ext_resource type="PackedScene" uid="uid://dsm52adrfam01" path="res://prefabs/map_empty.tscn" id="1_5chxy"]
 [ext_resource type="PackedScene" uid="uid://bwnxv0u6mts3x" path="res://prefabs/ent/player_spawn.tscn" id="1_ksfyf"]
+[ext_resource type="PackedScene" uid="uid://bq2qmt4o0pxhw" path="res://prefabs/ent/triggers/trigger_logic.tscn" id="4_4g717"]
 [ext_resource type="PackedScene" uid="uid://nhvw5e3iaiuf" path="res://prefabs/ent/game/ent_spawner.tscn" id="4_bno5u"]
 [ext_resource type="PackedScene" uid="uid://c47a3x61oyfrn" path="res://prefabs/ent/logic/button.tscn" id="5_an0wm"]
 [ext_resource type="PackedScene" uid="uid://c7ofr51yq10ya" path="res://prefabs/ent/logic/ent_propagator.tscn" id="5_x0tq8"]
@@ -35,16 +36,6 @@ size = Vector3(0.5, 4, 8)
 [sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_rubss"]
 data = PackedVector3Array(-0.25, 2, 4, 0.25, 2, 4, -0.25, -2, 4, 0.25, 2, 4, 0.25, -2, 4, -0.25, -2, 4, 0.25, 2, -4, -0.25, 2, -4, 0.25, -2, -4, -0.25, 2, -4, -0.25, -2, -4, 0.25, -2, -4, 0.25, 2, 4, 0.25, 2, -4, 0.25, -2, 4, 0.25, 2, -4, 0.25, -2, -4, 0.25, -2, 4, -0.25, 2, -4, -0.25, 2, 4, -0.25, -2, -4, -0.25, 2, 4, -0.25, -2, 4, -0.25, -2, -4, 0.25, 2, 4, -0.25, 2, 4, 0.25, 2, -4, -0.25, 2, 4, -0.25, 2, -4, 0.25, 2, -4, -0.25, -2, 4, 0.25, -2, 4, -0.25, -2, -4, 0.25, -2, 4, 0.25, -2, -4, -0.25, -2, -4)
 
-[sub_resource type="Animation" id="Animation_0lnrg"]
-resource_name = "open"
-tracks/0/type = "position_3d"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = PackedFloat32Array(0, 1, -18, 2, 24, 1, 1, -18, 5, 24)
-
 [sub_resource type="Animation" id="Animation_h766h"]
 length = 0.001
 tracks/0/type = "position_3d"
@@ -54,6 +45,17 @@ tracks/0/path = NodePath(".")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = PackedFloat32Array(0, 1, -18, 2, 24)
+
+[sub_resource type="Animation" id="Animation_0lnrg"]
+resource_name = "open"
+length = 0.5
+tracks/0/type = "position_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, -18, 2, 24, 0.5, 1, -18, 5, 24)
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_oa7kk"]
 _data = {
@@ -175,6 +177,11 @@ ent_name = "example/example"
 transform = Transform3D(1, 0, 1.06581e-14, 0, 1, 0, -1.06581e-14, 0, 1, 2, 2, 26)
 ent_name = "example/example"
 
+[node name="trigger_logic" parent="." node_paths=PackedStringArray("target") instance=ExtResource("4_4g717")]
+transform = Transform3D(-0.2, 0, 2.66453e-14, 0, 1.89, 0, 2.13162e-15, 0, 2.5, -16, 1, 24)
+target = NodePath("../ent_condition")
+multiple = true
+
 [node name="ent_spawner3" parent="." instance=ExtResource("4_bno5u")]
 transform = Transform3D(1, 0, 1.06581e-14, 0, 1, 0, -1.06581e-14, 0, 1, -2, 2, 26)
 ent_name = "example/example"
@@ -238,11 +245,11 @@ pass a trigger signal when its condition is true.
 To set a condition, you need to use an ent_flagger
 to set the ent_condition's condition to true.
 
-Then press the button next to the door, and the door will open
+Then cross the trigger in front of the door, and the door will open
 only if the ent_condition's condition is true."
 
 [node name="ent_condition" parent="." node_paths=PackedStringArray("target") instance=ExtResource("6_yxksq")]
-transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -15, 2, 27)
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -15, 1, 27)
 target = NodePath("../ent_player")
 
 [node name="door" type="MeshInstance3D" parent="."]
@@ -263,10 +270,6 @@ libraries = {
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 1, 21)
 target = NodePath("../ent_flagger")
 
-[node name="button4" parent="." node_paths=PackedStringArray("target") instance=ExtResource("5_an0wm")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15, 1, 27)
-target = NodePath("../ent_condition")
-
 [node name="ent_flagger" parent="." node_paths=PackedStringArray("target") instance=ExtResource("7_yq6vs")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 2, 21)
 target = NodePath("../ent_condition")
@@ -274,6 +277,6 @@ flag = "condition"
 value = [true]
 
 [node name="ent_player" parent="." instance=ExtResource("8_ammgx")]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -15, 3, 27)
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -15, 2, 27)
 targets = [NodePath("../door/AnimationPlayer")]
 optional_name = ["open"]

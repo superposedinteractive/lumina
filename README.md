@@ -9,13 +9,11 @@ After everything finished importing, press `F5`. If Godot reports no errors, the
 Take a look around in the Wiki section for more documentation!
 
 ---
-
 **Lumina** is released under the MIT license, which is a permissive open-source license that allows for the use, modification, and distribution of the code without any warranty. However, the MIT license requires that the original copyright notice and permission notice be included in all copies and substantial portions of the software. This means that if you use Lumina in your project, you must include attribution to the original creators of the code and somewhere visible to the end user. This attribution can be as simple as including a comment in your code and acknowledging Lumina in your game's credits.
 
 Including a mention of Lumina in the credits, main menu, or in a credits text file is fine.
 
+_(Or you can just leave the splash screen as it is and you'll satisfy the requirement lol)_
 ---
 
 Contributing note: Any code submitted here via PR's or direct commits will be rightfully owned by us.
-
-_(Or you can just leave the splash screen as it is and you'll satisfy the requirement lol)_

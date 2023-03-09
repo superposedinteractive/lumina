@@ -28,7 +28,7 @@ SettingsManager="*res://scripts/util/settings_manager.gd"
 
 window/size/viewport_width=1280
 window/size/viewport_height=720
-window/stretch/aspect="ignore"
+window/stretch/mode="viewport"
 
 [dotnet]
 
@@ -36,7 +36,6 @@ project/assembly_name="LUMINA"
 
 [editor]
 
-run/main_run_args="--dev"
 movie_writer/mix_rate=44100
 movie_writer/disable_vsync=true
 movie_writer/fps=240

@@ -14,6 +14,7 @@ Take a look around in the Wiki section for more documentation!
 Including a mention of Lumina in the credits, main menu, or in a credits text file is fine.
 
 _(Or you can just leave the splash screen as it is and you'll satisfy the requirement lol)_
+
 ---
 
 Contributing note: Any code submitted here via PR's or direct commits will be rightfully owned by us.

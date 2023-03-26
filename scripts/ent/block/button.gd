@@ -1,6 +1,7 @@
 extends lumina_entity
 
 @export var target : lumina_entity
+@export var once : bool = false
 
 func _ready():
 	if !target is lumina_entity:
@@ -13,3 +14,5 @@ func use():
 	
 	msg("used!")
 	target.trigger()
+	if once:
+		queue_free()

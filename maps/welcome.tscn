@@ -282,6 +282,10 @@ libraries = {
 [node name="button3" parent="." node_paths=PackedStringArray("target") instance=ExtResource("5_an0wm")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 1, 21)
 target = NodePath("../ent_flagger")
+solid_to_player = false
+
+[node name="button" parent="button3" index="1"]
+collision_layer = 0
 
 [node name="ent_flagger" parent="." node_paths=PackedStringArray("target") instance=ExtResource("7_yq6vs")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 2, 21)
@@ -293,3 +297,5 @@ value = [true]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -15, 2, 27)
 targets = [NodePath("../door/AnimationPlayer")]
 optional_name = ["open"]
+
+[editable path="button3"]

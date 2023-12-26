@@ -1,3 +1,6 @@
+# Do not use.
+Lumina is known to have bugs and quirks. Lumina won't be fixed or worked on ever again. We're working on a replacement. Please don't use it for new projects. 
+
 # Lumina
 Lumina is a flexible and powerful first-person shooter framework for the Godot game engine. It provides a solid foundation for creating captivating FPS games.
 
